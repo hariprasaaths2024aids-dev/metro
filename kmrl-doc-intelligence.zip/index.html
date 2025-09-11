@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMRL Document Intelligence System</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">🚇</div>
+                    <div class="logo-text">
+                        <h2>KMRL</h2>
+                        <span>Document Intelligence</span>
+                    </div>
+                </div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item active" data-view="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
+                </li>
+                <li class="nav-item" data-view="upload">
+                    <span class="nav-icon">📤</span>
+                    <span class="nav-text">Upload Documents</span>
+                </li>
+                <li class="nav-item" data-view="library">
+                    <span class="nav-icon">📚</span>
+                    <span class="nav-text">Document Library</span>
+                </li>
+                <li class="nav-item" data-view="compliance">
+                    <span class="nav-icon">⚖️</span>
+                    <span class="nav-text">Compliance Center</span>
+                </li>
+                <li class="nav-item" data-view="analytics">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-text">Analytics</span>
+                </li>
+                <li class="nav-item" data-view="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-text">Settings</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-content">
+                    <h1 id="page-title">Dashboard</h1>
+                    <div class="header-actions">
+                        <div class="notification-bell">
+                            <span class="notification-icon">🔔</span>
+                            <span class="notification-badge">3</span>
+                        </div>
+                        <div class="user-profile">
+                            <span>Welcome, Admin</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard View -->
+            <div class="view dashboard-view active">
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📄</div>
+                        <div class="stat-content">
+                            <h3 id="total-docs">8</h3>
+                            <p>Total Documents</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏳</div>
+                        <div class="stat-content">
+                            <h3 id="pending-actions">5</h3>
+                            <p>Pending Actions</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🚨</div>
+                        <div class="stat-content">
+                            <h3 id="high-priority">3</h3>
+                            <p>High Priority</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <h3 id="compliance-rate">87%</h3>
+                            <p>Compliance Rate</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Documents and Alerts -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-section">
+                        <h3>Recent Documents</h3>
+                        <div id="recent-documents" class="document-list">
+                            <!-- Recent documents will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-section">
+                        <h3>Critical Alerts</h3>
+                        <div class="alerts-list">
+                            <div class="alert alert-high">
+                                <div class="alert-icon">🚨</div>
+                                <div class="alert-content">
+                                    <h4>Fire Safety Training Deadline</h4>
+                                    <p>CMRS compliance deadline: Oct 1, 2025 (20 days left)</p>
+                                </div>
+                            </div>
+                            <div class="alert alert-medium">
+                                <div class="alert-icon">⚠️</div>
+                                <div class="alert-content">
+                                    <h4>Escalator Repair Required</h4>
+                                    <p>Kakanad Station - Motor replacement needed</p>
+                                </div>
+                            </div>
+                            <div class="alert alert-info">
+                                <div class="alert-icon">ℹ️</div>
+                                <div class="alert-content">
+                                    <h4>EIA Submission Due</h4>
+                                    <p>Phase 3 environmental impact assessment (111 days left)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload View -->
+            <div class="view upload-view">
+                <div class="upload-container">
+                    <div class="upload-area" id="upload-area">
+                        <div class="upload-icon">📤</div>
+                        <h3>Drag & Drop Documents Here</h3>
+                        <p>Or click to browse files</p>
+                        <input type="file" id="file-input" multiple accept=".pdf,.doc,.docx,.txt" hidden>
+                        <button class="btn btn--primary" onclick="document.getElementById('file-input').click()">
+                            Choose Files
+                        </button>
+                    </div>
+                    
+                    <div class="upload-progress hidden" id="upload-progress">
+                        <h3>Processing Documents...</h3>
+                        <div class="progress-list" id="progress-list">
+                            <!-- Progress items will be added dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document Library View -->
+            <div class="view library-view">
+                <div class="library-controls">
+                    <div class="search-bar">
+                        <input type="text" id="search-input" placeholder="Search documents..." class="form-control">
+                    </div>
+                    <div class="filter-controls">
+                        <select id="department-filter" class="form-control">
+                            <option value="">All Departments</option>
+                            <option value="Operations">Operations</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Rolling Stock">Rolling Stock</option>
+                            <option value="Infrastructure">Infrastructure</option>
+                            <option value="Safety & Security">Safety & Security</option>
+                            <option value="Environment">Environment</option>
+                            <option value="Procurement">Procurement</option>
+                            <option value="HR">HR</option>
+                        </select>
+                        <select id="priority-filter" class="form-control">
+                            <option value="">All Priorities</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Routine">Routine</option>
+                        </select>
+                        <select id="type-filter" class="form-control">
+                            <option value="">All Types</option>
+                            <option value="Incident Report">Incident Report</option>
+                            <option value="Maintenance Job Card">Maintenance Job Card</option>
+                            <option value="Regulatory Circular">Regulatory Circular</option>
+                            <option value="Policy Document">Policy Document</option>
+                            <option value="Purchase Order">Purchase Order</option>
+                            <option value="HR Policy">HR Policy</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="documents-grid" id="documents-grid">
+                    <!-- Documents will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Compliance View -->
+            <div class="view compliance-view">
+                <div class="compliance-header">
+                    <h3>Compliance Dashboard</h3>
+                    <div class="compliance-stats">
+                        <div class="compliance-stat">
+                            <span class="stat-value">12</span>
+                            <span class="stat-label">Active Requirements</span>
+                        </div>
+                        <div class="compliance-stat">
+                            <span class="stat-value">3</span>
+                            <span class="stat-label">Overdue</span>
+                        </div>
+                        <div class="compliance-stat">
+                            <span class="stat-value">7</span>
+                            <span class="stat-label">Due This Month</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="compliance-content">
+                    <div class="compliance-timeline">
+                        <h4>Upcoming Deadlines</h4>
+                        <div class="timeline-items">
+                            <div class="timeline-item urgent">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <h5>Fire Safety Training Completion</h5>
+                                    <p>CMRS Circular 2025/03 - Due: October 1, 2025</p>
+                                    <span class="days-left">20 days left</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item warning">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <h5>Fire Detection System Upgrade</h5>
+                                    <p>CMRS Circular 2025/03 - Due: October 10, 2025</p>
+                                    <span class="days-left">29 days left</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item normal">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <h5>Full CMRS Compliance</h5>
+                                    <p>CMRS Circular 2025/03 - Due: October 15, 2025</p>
+                                    <span class="days-left">34 days left</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item normal">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <h5>EIA Report Submission</h5>
+                                    <p>Ministry EIA Guidelines 2025 - Due: December 31, 2025</p>
+                                    <span class="days-left">111 days left</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics View -->
+            <div class="view analytics-view">
+                <div class="analytics-header">
+                    <h3>Document Analytics</h3>
+                    <div class="date-range">
+                        <span>Last 30 days</span>
+                    </div>
+                </div>
+                
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h4>Documents by Department</h4>
+                        <div class="chart-container" style="position: relative; height: 300px;">
+                            <canvas id="departmentChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h4>Documents by Priority</h4>
+                        <div class="chart-container" style="position: relative; height: 300px;">
+                            <canvas id="priorityChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h4>Document Types Distribution</h4>
+                        <div class="chart-container" style="position: relative; height: 300px;">
+                            <canvas id="typeChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h4>Language Distribution</h4>
+                        <div class="chart-container" style="position: relative; height: 300px;">
+                            <canvas id="languageChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div class="view settings-view">
+                <div class="settings-container">
+                    <h3>System Settings</h3>
+                    
+                    <div class="settings-section">
+                        <h4>Language Preferences</h4>
+                        <div class="form-group">
+                            <label class="form-label">Default Language</label>
+                            <select class="form-control">
+                                <option value="en">English</option>
+                                <option value="ml">Malayalam</option>
+                                <option value="bi">Bilingual</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h4>Notification Settings</h4>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" checked> Email notifications for high-priority documents
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" checked> Compliance deadline reminders
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox"> Daily digest emails
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h4>Processing Settings</h4>
+                        <div class="form-group">
+                            <label class="form-label">Auto-categorization confidence threshold</label>
+                            <input type="range" min="50" max="95" value="85" class="form-control">
+                            <span>85%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-actions">
+                        <button class="btn btn--primary">Save Settings</button>
+                        <button class="btn btn--secondary">Reset to Defaults</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Document Viewer Modal -->
+    <div class="modal hidden" id="document-modal">
+        <div class="modal-backdrop" onclick="closeDocumentModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Document Title</h3>
+                <button class="modal-close" onclick="closeDocumentModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="document-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Type:</span>
+                        <span id="modal-type">-</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Department:</span>
+                        <span id="modal-department">-</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Priority:</span>
+                        <span id="modal-priority" class="status">-</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Date:</span>
+                        <span id="modal-date">-</span>
+                    </div>
+                </div>
+                
+                <div class="document-summary">
+                    <h4>Summary</h4>
+                    <p id="modal-summary">-</p>
+                </div>
+                
+                <div class="document-content">
+                    <h4>Content</h4>
+                    <div id="modal-content">-</div>
+                </div>
+                
+                <div class="document-actions-section">
+                    <h4>Action Items</h4>
+                    <ul id="modal-actions">
+                        <!-- Actions will be populated -->
+                    </ul>
+                </div>
+                
+                <div class="document-stakeholders">
+                    <h4>Stakeholders</h4>
+                    <div id="modal-stakeholders" class="stakeholder-tags">
+                        <!-- Stakeholders will be populated -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--primary">Route to Departments</button>
+                <button class="btn btn--secondary">Mark as Reviewed</button>
+                <button class="btn btn--outline">Export Summary</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
